@@ -1,0 +1,19 @@
+{
+  "name": "purescript-pprint",
+  "moduleType": [
+    "node"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "output"
+  ],
+  "devDependencies": {
+    "purescript-console": "^0.1.0"
+  },
+  "dependencies": {
+    "purescript-arrays": "~0.4.2",
+    "purescript-strings": "~0.7.0"
+  }
+}
