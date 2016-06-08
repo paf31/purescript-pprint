@@ -69,7 +69,7 @@ Place one document on top of another.
 #### `hcat`
 
 ``` purescript
-hcat :: forall f. (Foldable f) => f Doc -> Doc
+hcat :: forall f. Foldable f => f Doc -> Doc
 ```
 
 Place documents in columns
@@ -77,7 +77,7 @@ Place documents in columns
 #### `vcat`
 
 ``` purescript
-vcat :: forall f. (Foldable f) => f Doc -> Doc
+vcat :: forall f. Foldable f => f Doc -> Doc
 ```
 
 Stack documents vertically
@@ -93,8 +93,8 @@ A wrapper for `Doc` with a `Monoid` instance which stacks documents vertically.
 
 ##### Instances
 ``` purescript
-instance semigroupStack :: Semigroup Stack
-instance monoidStack :: Monoid Stack
+Semigroup Stack
+Monoid Stack
 ```
 
 #### `stack`
@@ -116,8 +116,8 @@ A wrapper for `Doc` with a `Monoid` instance which stacks documents in columns.
 
 ##### Instances
 ``` purescript
-instance semigroupColumns :: Semigroup Columns
-instance monoidColumns :: Monoid Columns
+Semigroup Columns
+Monoid Columns
 ```
 
 #### `columns`

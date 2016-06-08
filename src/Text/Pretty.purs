@@ -19,12 +19,12 @@ module Text.Pretty
 
 import Prelude
 
-import Data.Array (length, range, replicate, take, zipWith)
-import Data.Foldable (Foldable, foldl, foldMap, intercalate)
-import Data.Monoid (Monoid)
+import Data.Array (length, range, take, zipWith)
+import Data.Foldable (class Foldable, foldl, foldMap, intercalate)
 import Data.Functor (($>))
-
-import qualified Data.String as S
+import Data.Monoid (class Monoid)
+import Data.String as S
+import Data.Unfoldable (replicate)
 
 -- | A text document.
 newtype Doc = Doc
@@ -44,10 +44,6 @@ height (Doc doc) = doc.height
 -- | Render a document to a string.
 render :: Doc -> String
 render (Doc doc) = intercalate "\n" doc.lines
-
-max :: Int -> Int -> Int
-max n m | n > m = n
-        | otherwise = m
 
 -- | An empty document
 empty :: Int -> Int -> Doc
@@ -71,22 +67,22 @@ text s =
 beside :: Doc -> Doc -> Doc
 beside (Doc d1) (Doc d2) =
   Doc { width:  d1.width + d2.width
-      , height: height
-      , lines:  take height $ zipWith append (adjust d1) (adjust d2)
+      , height: height_
+      , lines:  take height_ $ zipWith append (adjust d1) (adjust d2)
       }
   where
-  height :: Int
-  height = max d1.height d2.height
+    height_ :: Int
+    height_ = max d1.height d2.height
 
-  -- Adjust a document to fit the new width and height
-  adjust d = map (pad d.width) d.lines ++
-             replicate (height - d1.height) (emptyLine d1.width)
+    -- Adjust a document to fit the new width and height
+    adjust d = map (pad d.width) d.lines <>
+               replicate (height_ - d1.height) (emptyLine d1.width)
 
-  emptyLine :: Int -> String
-  emptyLine w = S.fromCharArray (replicate w ' ')
+    emptyLine :: Int -> String
+    emptyLine w = S.fromCharArray (replicate w ' ')
 
-  pad :: Int -> String -> String
-  pad w s = s ++ emptyLine (w - S.length s)
+    pad :: Int -> String -> String
+    pad w s = s <> emptyLine (w - S.length s)
 
 -- | Place one document on top of another.
 atop :: Doc -> Doc -> Doc
