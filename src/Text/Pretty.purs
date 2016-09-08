@@ -50,7 +50,9 @@ empty :: Int -> Int -> Doc
 empty w h =
   Doc { width: w
       , height: h
-      , lines: range 1 h $> " "
+      , lines: case h of
+                 0 -> []
+                 _ -> range 1 h $> ""
       }
 
 -- | Create a document from some text.
@@ -68,21 +70,21 @@ beside :: Doc -> Doc -> Doc
 beside (Doc d1) (Doc d2) =
   Doc { width:  d1.width + d2.width
       , height: height_
-      , lines:  take height_ $ zipWith append (adjust d1) (adjust d2)
+      , lines:  take height_ $ zipWith append (map (padRight d1.width) (adjust d1)) (adjust d2)
       }
   where
     height_ :: Int
     height_ = max d1.height d2.height
 
     -- Adjust a document to fit the new width and height
-    adjust d = map (pad d.width) d.lines <>
-               replicate (height_ - d1.height) (emptyLine d1.width)
+    adjust :: { lines :: Array String, width :: Int, height :: Int } -> Array String
+    adjust d = d.lines <> replicate (height_ - d.height) (emptyLine d.width)
 
     emptyLine :: Int -> String
     emptyLine w = S.fromCharArray (replicate w ' ')
 
-    pad :: Int -> String -> String
-    pad w s = s <> emptyLine (w - S.length s)
+    padRight :: Int -> String -> String
+    padRight w s = s <> emptyLine (w - S.length s)
 
 -- | Place one document on top of another.
 atop :: Doc -> Doc -> Doc
