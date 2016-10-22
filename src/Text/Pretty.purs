@@ -1,7 +1,7 @@
 -- | This module defines a set of combinators for pretty printing text.
 
 module Text.Pretty
-  ( Doc()
+  ( Doc
   , width
   , height
   , render
@@ -10,20 +10,17 @@ module Text.Pretty
   , beside
   , atop
   , Stack(..)
-  , stack
   , vcat
   , Columns(..)
-  , columns
   , hcat
   ) where
 
 import Prelude
-
+import Data.String as S
 import Data.Array (length, range, take, zipWith)
 import Data.Foldable (class Foldable, foldl, foldMap, intercalate)
-import Data.Functor (($>))
 import Data.Monoid (class Monoid)
-import Data.String as S
+import Data.Newtype (ala, class Newtype, wrap)
 import Data.Unfoldable (replicate)
 
 -- | A text document.
@@ -63,7 +60,7 @@ text s =
       , lines:  lines
       }
   where
-  lines = S.split "\n" s
+  lines = S.split (wrap "\n") s
 
 -- | Place one document beside another.
 beside :: Doc -> Doc -> Doc
@@ -95,19 +92,17 @@ atop (Doc d1) (Doc d2) =
       }
 
 -- | Place documents in columns
-hcat :: forall f. (Foldable f) => f Doc -> Doc
-hcat = columns <<< foldMap Columns
+hcat :: forall f. Foldable f => f Doc -> Doc
+hcat = ala Columns foldMap
 
 -- | Stack documents vertically
-vcat :: forall f. (Foldable f) => f Doc -> Doc
-vcat = stack <<< foldMap Stack
+vcat :: forall f. Foldable f => f Doc -> Doc
+vcat = ala Stack foldMap
 
 -- | A wrapper for `Doc` with a `Monoid` instance which stacks documents vertically.
 newtype Stack = Stack Doc
 
--- | Turn a `Stack` back into a document.
-stack :: Stack -> Doc
-stack (Stack doc) = doc
+derive instance newtypeStack :: Newtype Stack _
 
 instance semigroupStack :: Semigroup Stack where
   append (Stack d1) (Stack d2) = Stack (d1 `atop` d2)
@@ -118,9 +113,7 @@ instance monoidStack :: Monoid Stack where
 -- | A wrapper for `Doc` with a `Monoid` instance which stacks documents in columns.
 newtype Columns = Columns Doc
 
--- | Turn a collection of columns back into a document.
-columns :: Columns -> Doc
-columns (Columns doc) = doc
+derive instance newtypeColumns :: Newtype Columns _
 
 instance semigroupColumns :: Semigroup Columns where
   append (Columns d1) (Columns d2) = Columns (d1 `beside` d2)
