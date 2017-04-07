@@ -93,17 +93,10 @@ A wrapper for `Doc` with a `Monoid` instance which stacks documents vertically.
 
 ##### Instances
 ``` purescript
+Newtype Stack _
 Semigroup Stack
 Monoid Stack
 ```
-
-#### `stack`
-
-``` purescript
-stack :: Stack -> Doc
-```
-
-Turn a `Stack` back into a document.
 
 #### `Columns`
 
@@ -116,16 +109,9 @@ A wrapper for `Doc` with a `Monoid` instance which stacks documents in columns.
 
 ##### Instances
 ``` purescript
+Newtype Columns _
 Semigroup Columns
 Monoid Columns
 ```
-
-#### `columns`
-
-``` purescript
-columns :: Columns -> Doc
-```
-
-Turn a collection of columns back into a document.
 
 
