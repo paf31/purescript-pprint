@@ -15,11 +15,11 @@
     "url": "git://github.com/paf31/purescript-pprint.git"
   },
   "devDependencies": {
-    "purescript-console": "^2.0.0"
+    "purescript-console": "^3.0.0"
   },
   "dependencies": {
-    "purescript-arrays": "^3.0.1",
-    "purescript-strings": "^2.0.2",
-    "purescript-unfoldable": "^2.0.0"
+    "purescript-arrays": "^4.0.0",
+    "purescript-strings": "^3.0.0",
+    "purescript-unfoldable": "^3.0.0"
   }
 }
