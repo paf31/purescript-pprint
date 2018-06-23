@@ -66,22 +66,6 @@ atop :: Doc -> Doc -> Doc
 
 Place one document on top of another.
 
-#### `hcat`
-
-``` purescript
-hcat :: forall f. Foldable f => f Doc -> Doc
-```
-
-Place documents in columns
-
-#### `vcat`
-
-``` purescript
-vcat :: forall f. Foldable f => f Doc -> Doc
-```
-
-Stack documents vertically
-
 #### `Stack`
 
 ``` purescript
@@ -98,6 +82,14 @@ Semigroup Stack
 Monoid Stack
 ```
 
+#### `vcat`
+
+``` purescript
+vcat :: forall f. Foldable f => f Doc -> Doc
+```
+
+Stack documents vertically
+
 #### `Columns`
 
 ``` purescript
@@ -113,5 +105,13 @@ Newtype Columns _
 Semigroup Columns
 Monoid Columns
 ```
+
+#### `hcat`
+
+``` purescript
+hcat :: forall f. Foldable f => f Doc -> Doc
+```
+
+Place documents in columns
 
 

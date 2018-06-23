@@ -16,11 +16,11 @@ module Text.Pretty
   ) where
 
 import Prelude
-import Data.String as S
 import Data.Array (length, range, take, zipWith)
 import Data.Foldable (class Foldable, foldl, foldMap, intercalate)
-import Data.Monoid (class Monoid)
 import Data.Newtype (ala, class Newtype, wrap)
+import Data.String as S
+import Data.String.CodeUnits as SCU
 import Data.Unfoldable (replicate)
 
 -- | A text document.
@@ -78,7 +78,7 @@ beside (Doc d1) (Doc d2) =
     adjust d = d.lines <> replicate (height_ - d.height) (emptyLine d.width)
 
     emptyLine :: Int -> String
-    emptyLine w = S.fromCharArray (replicate w ' ')
+    emptyLine w = SCU.fromCharArray (replicate w ' ' :: Array Char)
 
     padRight :: Int -> String -> String
     padRight w s = s <> emptyLine (w - S.length s)
