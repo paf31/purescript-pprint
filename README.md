@@ -2,4 +2,4 @@
 
 A simple pretty printing library
 
-- [Module Documentation](docs/Text/Pretty.md)
+- [Module Documentation](generated-docs/Text/Pretty.md)
